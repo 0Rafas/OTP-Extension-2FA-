@@ -1,4 +1,3 @@
-
 async function processQRCode(imageData) {
   try {
     const canvas = document.createElement('canvas');
@@ -11,11 +10,11 @@ async function processQRCode(imageData) {
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
         
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const canvasImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         
         // Use jsQR to decode the QR code
         if (typeof jsQR !== 'undefined') {
-          const code = jsQR(imageData.data, imageData.width, imageData.height);
+          const code = jsQR(canvasImageData.data, canvasImageData.width, canvasImageData.height);
           if (code) {
             resolve(code.data);
           } else {
@@ -37,7 +36,7 @@ async function processQRCode(imageData) {
 function parseTOTPUri(uri) {
   try {
     const url = new URL(uri);
-    if (url.protocol !== 'otpauth:' || url.hostname !== 'totp') {
+    if (url.protocol !== 'otpauth:'  url.hostname !== 'totp') {
       throw new Error('URI غير صالح');
     }
     
@@ -47,16 +46,15 @@ function parseTOTPUri(uri) {
     return {
       label: label,
       secret: params.get('secret'),
-      issuer: params.get('issuer') || '',
-      algorithm: params.get('algorithm') || 'SHA1',
-      digits: parseInt(params.get('digits')) || 6,
+      issuer: params.get('issuer')  '',
+      algorithm: params.get('algorithm')  'SHA1',
+      digits: parseInt(params.get('digits'))  6,
       period: parseInt(params.get('period')) || 30
     };
   } catch (error) {
     throw new Error('فشل في تحليل QR Code');
   }
 }
-
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'qrCaptured') {
@@ -75,15 +73,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Load jsQR library
 if (typeof importScripts !== 'undefined') {
   try {
-    importScripts('https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js');
-  } catch (error) {
-    console.error('Failed to load jsQR library:', error);
-  }
-}
-
-ipts('https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js');
-  } catch (error) {
-    console.error('Failed to load jsQR library:', error);
-  }
-}
-
+const script = document.createElement('script');
+script.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
+document.head.appendChild(script);
+`
