@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OTP 2FA Extension</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="totp.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div id="main-view">
+      <div id="otp-list">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-state-icon">🔐</div>
+          <p>لا توجد حسابات 2FA مضافة بعد</p>
+        </div>
+      </div>
+      <div class="footer-buttons">
+        <button id="qr-scan-btn" class="icon-button" title="مسح QR Code">
+          <img src="icons/qr-code.png" alt="QR Scan">
+        </button>
+        <button id="key-entry-btn" class="icon-button" title="إدخال مفتاح المصادقة">
+          <img src="icons/key.png" alt="Key Entry">
+        </button>
+      </div>
+    </div>
+    <div id="form-view" style="display:none;">
+      <h2 id="form-title"></h2>
+      <input type="text" id="otp-name" placeholder="اسم الحساب (مثال: Google, Facebook)">
+      <input type="number" id="otp-duration" placeholder="مدة التغيير (ثواني)" value="30" min="15" max="300">
+      <input type="text" id="auth-key" placeholder="مفتاح المصادقة" style="display:none;">
+      <div class="form-buttons">
+        <button id="save-otp-btn" class="blue-button">حفظ</button>
+        <button id="cancel-form-btn" class="red-button">إلغاء</button>
+      </div>
+      <p id="error-message" class="error-message" style="display:none;"></p>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
+
