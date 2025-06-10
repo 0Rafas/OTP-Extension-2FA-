@@ -4,7 +4,9 @@
 
 # Info 📌
 **Rafas OTP is a fully open-source Chrome Extension
-```Coded With Html , CSS , JavaScript```that supports QR Code scanning and Auth Key entry.**
+```Coded With Html , CSS , JavaScript```
+
+**that supports QR Code scanning and Auth Key entry.**
 
 **It also allows storing the key in the UI.
 However, in this version, clicking to copy the key is not supported — this feature might be added in the next advanced version.**
