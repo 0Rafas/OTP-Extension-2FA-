@@ -36,23 +36,23 @@ async function processQRCode(imageData) {
 function parseTOTPUri(uri) {
   try {
     const url = new URL(uri);
-    if (url.protocol !== 'otpauth:'  url.hostname !== 'totp') {
-      throw new Error('URI غير صالح');
+    if (url.protocol !== 'otpauth:' || url.hostname !== 'totp') {
+      throw new Error('URI غير صالح'); // "Invalid URI"
     }
-    
+
     const label = decodeURIComponent(url.pathname.substring(1));
     const params = new URLSearchParams(url.search);
-    
+
     return {
       label: label,
       secret: params.get('secret'),
-      issuer: params.get('issuer')  '',
-      algorithm: params.get('algorithm')  'SHA1',
-      digits: parseInt(params.get('digits'))  6,
+      issuer: params.get('issuer') || '',
+      algorithm: params.get('algorithm') || 'SHA1',
+      digits: parseInt(params.get('digits')) || 6,
       period: parseInt(params.get('period')) || 30
     };
   } catch (error) {
-    throw new Error('فشل في تحليل QR Code');
+    throw new Error('فشل في تحليل QR Code'); // "Failed to parse QR Code"
   }
 }
 
@@ -76,4 +76,7 @@ if (typeof importScripts !== 'undefined') {
 const script = document.createElement('script');
 script.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
 document.head.appendChild(script);
-`
+  } catch (error) {
+    console.error('فشل في تحميل مكتبة jsQR:', error);
+  }
+};
