@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentMode = mode;
     currentQRData = qrData;
     hideError();
-    
+
     otpNameInput.value = qrData?.label || qrData?.issuer || '';
     otpDurationInput.value = qrData?.period || '30';
     authKeyInput.value = qrData?.secret || '';
@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function startQRScan() {
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, {action: 'startQRSelection'}, (response) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'startQRSelection' }, (response) => {
         if (chrome.runtime.lastError) {
           showError('فشل في بدء مسح QR Code. تأكد من تحديث الصفحة.');
         }
@@ -81,45 +81,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const otpItem = document.createElement('div');
     otpItem.className = 'otp-item';
     otpItem.dataset.id = otpData.id;
-    
+
     const nameSpan = document.createElement('span');
     nameSpan.textContent = otpData.name;
-    
+
     const codeSpan = document.createElement('span');
     codeSpan.className = 'otp-code';
     codeSpan.textContent = '------';
-    
+
     const countdownCircle = document.createElement('div');
     countdownCircle.className = 'countdown-circle';
     countdownCircle.textContent = otpData.period;
-    
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.innerHTML = '×';
     deleteBtn.onclick = () => deleteOTP(otpData.id);
-    
+
     otpItem.appendChild(nameSpan);
     otpItem.appendChild(codeSpan);
     otpItem.appendChild(countdownCircle);
     otpItem.appendChild(deleteBtn);
-    
+
     return otpItem;
   }
 
   async function updateOTPCode(otpData) {
     const otpItem = document.querySelector(`[data-id="${otpData.id}"]`);
     if (!otpItem) return;
-    
+
     const codeSpan = otpItem.querySelector('.otp-code');
     const countdownCircle = otpItem.querySelector('.countdown-circle');
-    
+
     try {
       const code = await generateOTPCode(otpData.secret, otpData.period);
       codeSpan.textContent = code;
-      
+
       const timeRemaining = TOTP.getTimeRemaining(otpData.period);
       countdownCircle.textContent = timeRemaining;
-      
+
       const progress = (timeRemaining / otpData.period) * 360;
       countdownCircle.style.background = `conic-gradient(#007bff ${progress}deg, transparent ${progress}deg)`;
     } catch (error) {
@@ -132,13 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (otpTimers.has(otpData.id)) {
       clearInterval(otpTimers.get(otpData.id));
     }
-    
+
     updateOTPCode(otpData);
-    
+
     const timer = setInterval(() => {
       updateOTPCode(otpData);
     }, 1000);
-    
+
     otpTimers.set(otpData.id, timer);
   }
 
@@ -172,14 +172,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await chrome.storage.local.get('otpAccounts');
       const accounts = result.otpAccounts || [];
       accounts.push(otpData);
-      
-      await chrome.storage.local.set({otpAccounts: accounts});
-      
+
+      await chrome.storage.local.set({ otpAccounts: accounts });
+
       emptyState.style.display = 'none';
       const otpItem = createOTPItem(otpData);
       otpList.appendChild(otpItem);
       startOTPTimer(otpData);
-      
+
       hideForm();
     } catch (error) {
       showError('فشل في حفظ البيانات.');
@@ -191,19 +191,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await chrome.storage.local.get('otpAccounts');
       const accounts = result.otpAccounts || [];
       const filteredAccounts = accounts.filter(acc => acc.id !== id);
-      
-      await chrome.storage.local.set({otpAccounts: filteredAccounts});
-      
+
+      await chrome.storage.local.set({ otpAccounts: filteredAccounts });
+
       const otpItem = document.querySelector(`[data-id="${id}"]`);
       if (otpItem) {
         otpItem.remove();
       }
-      
+
       if (otpTimers.has(id)) {
         clearInterval(otpTimers.get(id));
         otpTimers.delete(id);
       }
-      
+
       if (filteredAccounts.length === 0) {
         emptyState.style.display = 'block';
       }
@@ -216,14 +216,14 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const result = await chrome.storage.local.get('otpAccounts');
       const accounts = result.otpAccounts || [];
-      
+
       if (accounts.length === 0) {
         emptyState.style.display = 'block';
         return;
       }
-      
+
       emptyState.style.display = 'none';
-      
+
       accounts.forEach(otpData => {
         const otpItem = createOTPItem(otpData);
         otpList.appendChild(otpItem);
@@ -258,10 +258,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 m();
-    }
-  });
-
-  // Initialize
-  loadOTPs();
-});
-
+// Initialize
+loadOTPs();
