@@ -3,7 +3,7 @@
 
 
 # Info 📌
-**Rafas OTP is a fully open-source Chrome Extension
+**Rafas OTP is a fully open-source Chrome Extension**
 ```Coded With Html , CSS , JavaScript```
 
 **that supports QR Code scanning and Auth Key entry.**
@@ -14,16 +14,20 @@ However, in this version, clicking to copy the key is not supported — this fea
 **You are allowed to modify the source code and publish it on the Chrome Store,
 but you are not allowed to publish it on GitHub as-is without crediting the original creator!**
 
-#   The Tutorial 🍭
-**1 -
-enable Developer Mode <>
-in the Extensions settings of your browser to allow adding custom files to the browser.**
+##   The Tutorial 🍭
 
-**2 - 
-extract ```Icons.7z``` (Archive)
-and convert it into a regular folder.
-Then, gather all the files into one folder and add it to the browser.**
 
+1. **Download the Repository**
+   - Clone the repository or download it as a ZIP file.
+
+2. **Extract Icons**
+   - Ensure you extract the `icons.7z` archive.
+   - The extension requires these icons to function properly.
+
+3. **Load the Extension in Chromium-Based Browser**
+   - Open your browser and navigate to `chrome://extensions/`.
+   - Enable **Developer mode** (toggle switch in the top right corner).
+   - Click on **Load unpacked** and select the directory where you extracted the repository.
 
 # Credits  
 Rafas , ksr
